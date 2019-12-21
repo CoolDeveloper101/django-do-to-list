@@ -23,3 +23,13 @@ def delete_todo(request, todo_id):
         tasks.get(id=todo_id).delete()
 
     return redirect('homepage')
+
+def completed_todo(request, todo_id):
+    if request.method == 'POST':
+        tasks = Task.objects.all()
+        current = timezone.now()
+        t = tasks.get(id=todo_id)
+        DoneTask.objects.create(task=t.task, date_started=t.date_started, date_done=current)
+        t.delete()
+
+    return redirect('homepage')

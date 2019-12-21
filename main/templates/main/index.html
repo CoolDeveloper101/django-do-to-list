@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <div class="row mt-4">
+        <div class="col">
+            <h2>Add Task To Do</h2>
+            <form action="add_todo/" method="POST" class="form-inline">
+                {% csrf_token %}
+                <input name="content" type="text" class="form-control mb-2 mr-sm-2" placeholder="type here..." required maxlength="200" autocomplete="off">
+                <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <h2>Tasks Done</h2>
+            <ul class="list-group">
+                {% for done_task in done_tasks %}
+                    <li class="list-group-item">{{ done_task.task }}
+                        <form action="undo_todo/{{ done_task.id }}/" method="POST" class="float-right">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Undo</button>
+                        </form>
+                    </li>
+                {% empty %}
+                    <p class="font-italic">Looks like you haven&#x27;t done any tasks.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <h2>Tasks Not Done</h2>
+            <ul class="list-group">
+                {% for task in tasks %}
+                    <li class="list-group-item">{{ task.task }}
+                        <div class="float-right">
+                            <p class="d-inline small mr-2">Started on {{ task.date_started }}</p>
+                            <form class="d-inline align-middle" action="completed_todo/{{ task.id }}/" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-success">Done</button>
+                            </form>
+                            <form class="d-inline align-middle" action='delete_todo/{{ task.id }}/' method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                {% empty %}
+                    <p class="font-italic">Looks like you have not tasks to do</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
