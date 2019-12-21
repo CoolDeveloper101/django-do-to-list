@@ -33,3 +33,12 @@ def completed_todo(request, todo_id):
         t.delete()
 
     return redirect('homepage')
+
+def undo_todo(request, todo_id):
+    if request.method == 'POST':
+        done_tasks = DoneTask.objects.all()
+        done_task = done_tasks.get(id=todo_id)
+        Task.objects.create(task=done_task.task, date_started=done_task.date_started)
+        done_task.delete()
+
+    return redirect('homepage')
