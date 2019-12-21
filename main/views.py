@@ -5,7 +5,9 @@ from django.utils import timezone
 
 # Create your views here.
 def index(request):
-    return HttpResponse("<h1>This is testing</h1>")
+    tasks = Task.objects.all().order_by("-date_started")
+    done_tasks = DoneTask.objects.all().order_by("-date_done")
+    return render(request, 'main/index.html', {'tasks': tasks, 'done_tasks': done_tasks})
 
 def add_todo(request):
     if request.method == 'POST':
