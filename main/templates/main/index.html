@@ -17,7 +17,7 @@
             <ul class="list-group">
                 {% for done_task in done_tasks %}
                     <li class="list-group-item">{{ done_task.task }}
-                        <form action="undo_todo/{{ done_task.id }}/" method="POST" class="float-right">
+                        <form action="{% url 'undo_todo' done_task.id %}" method="POST" class="float-right">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm btn-danger">Undo</button>
                         </form>
@@ -36,11 +36,11 @@
                     <li class="list-group-item">{{ task.task }}
                         <div class="float-right">
                             <p class="d-inline small mr-2">Started on {{ task.date_started }}</p>
-                            <form class="d-inline align-middle" action="completed_todo/{{ task.id }}/" method="POST">
+                            <form class="d-inline align-middle" action="{% url 'completed_todo' task.id %}" method="POST">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-success">Done</button>
                             </form>
-                            <form class="d-inline align-middle" action='delete_todo/{{ task.id }}/' method="POST">
+                            <form class="d-inline align-middle" action="{% url 'delete_todo' task.id %}" method="POST">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
